@@ -1,85 +1,91 @@
-
 //Wrong way
-interface AdminInterface{
-    login():void
-    createUser():void
-    deleteUser():void
-    updateUser():void
+interface AdminInterface {
+    login(): void
+    create(): void
+    delete(): void
+    updateUser(): void
 }
 
 class SuperAdminUser implements AdminInterface{
     login(): void {
-        console.log('User has been logged in');
+        console.log('SuperAdminUser login')
     }
-    createUser(): void {
-        console.log('User has been created');
+    create(): void {
+        console.log('SuperAdminUser create')
     }
-    deleteUser(): void {
-        console.log('User has been deleted');
-    }
-    updateUser(): void {
-        console.log('User has been updated');
-    }
-}
-
-class OrdinaryUser implements AdminInterface{
-
-    login(): void {
-        console.log('User has been logged in');
-    }
-
-    createUser(): void {
-        throw new Error("Method not implemented.");
-    }
-    deleteUser(): void {
-        throw new Error("Method not implemented.");
+    delete(): void {
+        console.log('SuperAdminUser delete')
     }
     updateUser(): void {
-        throw new Error("Method not implemented.");
+        console.log('SuperAdminUser update')
     }
+    
 }
 
-//Right Way
-interface MainUserInterface{
-    login():void
-}
-
-interface ValidatorUserSegregation extends MainUserInterface{
-    createUser():void
-}
-
-interface AdminInterfaceSegregation extends MainUserInterface{
-    createUser():void
-    deleteUser():void
-    updateUser():void
-}
-
-class SegregationSuperAdmin implements AdminInterfaceSegregation{
+class CommonUser implements AdminInterface{
+    
     login(): void {
-        console.log('User has been logged in');
+        console.log('Common User login')
     }
-    createUser(): void {
-        console.log('User has been created');
+    create(): void {
+        console.log('Common User create')
     }
-    deleteUser(): void {
-        console.log('User has been deleted');
+    delete(): void {
+        throw new Error("Method not implemented.")
     }
     updateUser(): void {
-        console.log('User has been updated');
+        throw new Error("Method not implemented.")
     }
 }
 
-class ValidatorUser implements ValidatorUserSegregation {
+//Right way
+
+interface MainUserInterface {
+    login(): void
+}
+
+
+interface CreateorRoleInterface extends MainUserInterface {
+    create(): void
+}
+
+interface AdminInterface extends CreateorRoleInterface {
+    delete(): void
+    updateUser(): void
+}
+
+class SuperAdminUserSegregation implements AdminInterface{
     login(): void {
-        console.log('User has been logged in');
+        console.log('SuperAdminUser login')
     }
-    createUser(): void {
-        console.log('User has been created');
+    create(): void {
+        console.log('SuperAdminUser create')
+    }
+    delete(): void {
+        console.log('SuperAdminUser delete')
+    }
+    updateUser(): void {
+        console.log('SuperAdminUser update')
+    }
+    
+}
+
+class CommonUserSegregation implements CreateorRoleInterface{
+    
+    login(): void {
+        console.log('Common User login')
+    }
+    create(): void {
+        console.log('Common User create')
     }
 }
 
-class segregationOrdindaryUser implements MainUserInterface{
-    login(): void {
-        console.log('User has been logged in');
-    }
-}
+const commonUser = new CommonUserSegregation()
+commonUser.login()
+commonUser.create()
+
+const superAdminUser = new SuperAdminUserSegregation()
+superAdminUser.login()
+superAdminUser.create()
+superAdminUser.delete()
+superAdminUser.updateUser()
