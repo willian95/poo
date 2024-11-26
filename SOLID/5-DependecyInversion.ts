@@ -1,6 +1,5 @@
 interface UserRepositoryInterface{
     createUser():void
-    deleteUser():void
 }
 
 class CreateUserUseCase {
@@ -13,24 +12,10 @@ class CreateUserUseCase {
 
 }
 
-class DeleteUserUseCase {
-
-    constructor(private userRepository: UserRepositoryInterface) {}
-
-    deleteUser(): void {
-        this.userRepository.deleteUser();
-    }
-
-}
-
 class UserRepository implements UserRepositoryInterface {
 
     createUser(): void {
         console.log('User has been created');
-    }
-
-    deleteUser(): void {
-        console.log('User has been deleted');
     }
 
 }
@@ -45,21 +30,8 @@ class CreateUserController {
 
 }
 
-class DeleteUserController {
-
-    constructor(private deleteUserUseCase: DeleteUserUseCase) {}
-
-    deleteUser(): void {
-        this.deleteUserUseCase.deleteUser();
-    }
-
-}
 
 const userRepository = new UserRepository();
 const createUserUseCase = new CreateUserUseCase(userRepository);
 const createUserController = new CreateUserController(createUserUseCase);
 createUserController.createUser();
-
-const deleteUserUseCase = new DeleteUserUseCase(userRepository);
-const deleteUserController = new DeleteUserController(deleteUserUseCase);
-deleteUserController.deleteUser();
