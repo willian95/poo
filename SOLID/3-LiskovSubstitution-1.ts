@@ -31,34 +31,39 @@ class Authorize extends PaymentMethodsMain {
   }
 
 //Right way
-abstract class LiskovPayMethod{
-  abstract pay(): void;
+class PaymentMethodsMain {
+    pay(paymentMethod: string){
+        console.log(`Payment has been made via: ${paymentMethod}`)
+    }
 }
 
-abstract class LiskovPayRefundMethod extends LiskovPayMethod{
-  abstract refund(): void;
+class Stripe extends PaymentMethodsMain{
+
+    paymentMethod: string = "Stripe"
+
+    pay(){
+        super.pay(this.paymentMethod)
+    }
+
+    refund(){
+        console.log(`Payment has been refund via: ${this.paymentMethod}`)
+    }
+
 }
 
-class StripeLiskov extends LiskovPayRefundMethod{
-  refund(): void {
-    console.log("Payment has been refunded via Stripe");
-  }
-  pay(){
-    console.log('Payment has been made via Stripe');
-  }
+class Authorize extends PaymentMethodsMain{
+
+    paymentMethod: string = "Authorize"
+
+    pay(){
+        super.pay(this.paymentMethod)
+    }
+
 }
 
-class AuthorizeLiskov extends LiskovPayMethod{
-  pay(){
-    console.log('Payment has been made via Authorize');
-  }
-}
+const stripe = new Stripe()
+stripe.pay()
+stripe.refund()
 
-const stripeLiskov = new StripeLiskov();
-stripeLiskov.pay();
-stripeLiskov.refund();
-
-console.log("==============")
-
-const authorizeLiskov = new AuthorizeLiskov();
-authorizeLiskov.pay();
+const authorize = new Authorize()
+authorize.pay()
